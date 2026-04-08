@@ -1,0 +1,50 @@
+{
+  "name": "@sheygoodbai/openclaw-readable-output",
+  "displayName": "看得清 Readable Output",
+  "version": "0.1.0",
+  "description": "OpenClaw plugin that adds a readability-first layer to long AI replies. It inserts an overview, grouped key points, warning callouts, next-step cues, and a collapsed original-output block with language-aware labels.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "check": "node --check src/index.js && node --test tests/*.test.js",
+    "publish:skill": "bash scripts/clawhub-skill-publish-local.sh",
+    "publish:plugin": "bash scripts/clawhub-package-publish-local.sh"
+  },
+  "keywords": [
+    "openclaw",
+    "clawhub",
+    "readable output",
+    "typography",
+    "readability",
+    "layout",
+    "ai output",
+    "multilingual layout",
+    "white space",
+    "tool output",
+    "可读性",
+    "排版",
+    "多语言"
+  ],
+  "homepage": "https://clawhub.ai/plugins/openclaw-readable-output",
+  "bugs": {
+    "url": "https://github.com/Sheygoodbai/readable-output/issues"
+  },
+  "license": "MIT-0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sheygoodbai/readable-output.git"
+  },
+  "openclaw": {
+    "extensions": [
+      "./src/index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.3.24",
+      "minGatewayVersion": "2026.3.24"
+    },
+    "build": {
+      "openclawVersion": "2026.4.2",
+      "pluginSdkVersion": "2026.4.2"
+    }
+  }
+}

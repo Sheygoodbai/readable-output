@@ -1,0 +1,93 @@
+{
+  "id": "readable-output",
+  "name": "看得清 Readable Output",
+  "description": "Adds a readability-first layer to long OpenClaw replies. It inserts an overview, grouped key points, warning callouts, next-step cues, a closing reminder, and a collapsed original-output block with language-aware labels.",
+  "skills": [
+    "./skills"
+  ],
+  "bundledSkills": [
+    "readable-output"
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "enabled": {
+        "type": "boolean",
+        "default": false
+      },
+      "mode": {
+        "type": "string",
+        "enum": [
+          "adaptive",
+          "always"
+        ],
+        "default": "adaptive"
+      },
+      "languageProfile": {
+        "type": "string",
+        "enum": [
+          "auto",
+          "en",
+          "zh",
+          "ja",
+          "ko",
+          "ar",
+          "he"
+        ],
+        "default": "auto"
+      },
+      "density": {
+        "type": "string",
+        "enum": [
+          "compact",
+          "balanced",
+          "spacious"
+        ],
+        "default": "balanced"
+      },
+      "collapseOriginal": {
+        "type": "boolean",
+        "default": true
+      },
+      "closingCue": {
+        "type": "boolean",
+        "default": true
+      },
+      "trackStats": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "uiHints": {
+    "enabled": {
+      "label": "Enabled",
+      "help": "Master switch for 看得清 Readable Output."
+    },
+    "mode": {
+      "label": "Rewrite mode",
+      "help": "Adaptive only layers long or dense replies. Always layers every normal reply."
+    },
+    "languageProfile": {
+      "label": "Language profile",
+      "help": "Choose auto detection or force a script-aware layout profile."
+    },
+    "density": {
+      "label": "Layout density",
+      "help": "Control how much white space the readability layer uses."
+    },
+    "collapseOriginal": {
+      "label": "Collapse original",
+      "help": "Keep the raw original output folded below the readability layer."
+    },
+    "closingCue": {
+      "label": "Closing reminder",
+      "help": "Show a short reminder at the end when acting on the summary needs caution."
+    },
+    "trackStats": {
+      "label": "Track local stats",
+      "help": "Keep local counters for /readable status. No local chat content is uploaded anywhere."
+    }
+  }
+}
