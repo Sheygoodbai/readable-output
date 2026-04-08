@@ -17,9 +17,21 @@ Canonical pages:
 - Skill: `https://clawhub.ai/sheygoodbai/readable-output`
 - Plugin: `https://clawhub.ai/plugins/openclaw-readable-output`
 
+## Web-first demo
+
+If you do not have local OpenClaw, start with the browser demo shipped in this repo:
+
+- local demo entry: `docs/demo/index.html`
+- GitHub Pages-ready root: `docs/index.html`
+
+The demo runs entirely in the browser and reuses the same readability engine as
+the plugin. It exists as a low-friction trial path, but the main install CTA
+still stays on the ClawHub plugin page so traffic does not fragment.
+
 ## What it does
 
 - restructures long AI replies into a tool-output-style readability layer
+- ships a no-install web demo for users who want to test the behavior first
 - increases white space and grouping through markdown sections
 - isolates warnings and next actions so they are not buried in dense paragraphs
 - adapts labels and chunking to the user's chosen language profile
@@ -37,6 +49,12 @@ Current plugin-API reality:
 - `skill` and `MCP` routes can change structure and wording.
 - a plugin can automatically add the readability layer
 - changing the host app's actual typography chrome still requires a UI patch
+
+Web-first reality:
+
+- without local OpenClaw, the web demo is the closest honest substitute
+- it cannot intercept host-side output automatically
+- it can still prove whether the readability layer is useful before install
 
 ## Why this approach is evidence-aligned
 
@@ -78,6 +96,11 @@ Standalone skill route:
 clawhub install readable-output
 openclaw skills install readable-output
 ```
+
+No local OpenClaw yet:
+
+- open `docs/demo/index.html` directly in a browser
+- or publish the `docs/` folder with GitHub Pages
 
 ## Commands
 
@@ -142,4 +165,18 @@ Before calling this done, verify the file, rerun the test, and confirm the confi
 This probably works, but there are a few caveats worth calling out...
 
 </details>
+```
+
+## Demo sync
+
+The plugin and demo share one engine source:
+
+- shared engine: `shared/readable-engine.js`
+- plugin re-export: `src/readable-core.js`
+- demo copy target: `docs/demo/readable-engine.js`
+
+After editing the shared engine, sync the demo copy:
+
+```bash
+npm run sync:demo-core
 ```

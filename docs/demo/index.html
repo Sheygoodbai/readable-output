@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>看得清 Readable Output Demo</title>
+    <meta
+      name="description"
+      content="把 AI 的冗长输出整理成更易读的结构层。浏览器本地处理，不读取本地数据库，不上传聊天内容。"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%232962ff'/%3E%3Cpath d='M18 23h28M18 32h18M18 41h24' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="backdrop">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="orb orb-c"></div>
+    </div>
+
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">看得清 Readable Output</p>
+          <h1>把 AI 的长篇黑话，整理成一眼能看懂的可读层。</h1>
+          <p class="lede">
+            没有本地 OpenClaw 也能直接试。所有处理都在当前浏览器完成，不读取本地数据库，不上传聊天内容。
+          </p>
+
+          <div class="hero-actions">
+            <a
+              class="primary-link"
+              href="https://clawhub.ai/plugins/openclaw-readable-output"
+              target="_blank"
+              rel="noreferrer"
+            >
+              去 ClawHub 安装插件
+            </a>
+            <a
+              class="secondary-link"
+              href="https://clawhub.ai/sheygoodbai/readable-output"
+              target="_blank"
+              rel="noreferrer"
+            >
+              查看配套 Skill
+            </a>
+          </div>
+
+          <div class="hero-meta">
+            <span>Client-side only</span>
+            <span>多语言适配</span>
+            <span>保留原文折叠回看</span>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <p class="mini-label">为什么先做 web-first</p>
+          <ul class="mini-list">
+            <li>没有本地 OpenClaw 也能先体验核心价值</li>
+            <li>先验证“看懂更快”这件事，再决定是否装插件</li>
+            <li>后续所有流量依旧回收至 ClawHub 安装页</li>
+          </ul>
+        </aside>
+      </header>
+
+      <main class="workspace">
+        <section class="panel panel-input">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">输入</p>
+              <h2>粘贴一段 AI 输出</h2>
+            </div>
+            <div class="sample-row">
+              <button type="button" class="sample-chip" data-sample="zh">中文示例</button>
+              <button type="button" class="sample-chip" data-sample="en">English</button>
+              <button type="button" class="sample-chip" data-sample="mixed">代码混合</button>
+            </div>
+          </div>
+
+          <label class="sr-only" for="source-input">Source text</label>
+          <textarea
+            id="source-input"
+            spellcheck="false"
+            placeholder="把 OpenClaw、ChatGPT、Claude 或其他 AI 的长输出粘贴到这里。"
+          ></textarea>
+
+          <div class="control-grid">
+            <label class="field">
+              <span>语言适配</span>
+              <select id="language-profile">
+                <option value="auto">自动检测</option>
+                <option value="zh">中文</option>
+                <option value="en">English</option>
+                <option value="ja">日本語</option>
+                <option value="ko">한국어</option>
+                <option value="ar">العربية</option>
+                <option value="he">עברית</option>
+              </select>
+            </label>
+
+            <div class="field">
+              <span>改写策略</span>
+              <div class="segmented" data-group="mode">
+                <button type="button" class="segmented-button is-active" data-value="adaptive">
+                  adaptive
+                </button>
+                <button type="button" class="segmented-button" data-value="always">
+                  always
+                </button>
+              </div>
+            </div>
+
+            <div class="field">
+              <span>留白密度</span>
+              <div class="segmented" data-group="density">
+                <button type="button" class="segmented-button" data-value="compact">
+                  紧凑
+                </button>
+                <button type="button" class="segmented-button is-active" data-value="balanced">
+                  平衡
+                </button>
+                <button type="button" class="segmented-button" data-value="spacious">
+                  舒展
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="toggle-row">
+            <label class="checkbox">
+              <input id="toggle-original" type="checkbox" checked />
+              <span>保留原始输出折叠块</span>
+            </label>
+            <label class="checkbox">
+              <input id="toggle-reminder" type="checkbox" checked />
+              <span>保留结尾提醒</span>
+            </label>
+          </div>
+
+          <div class="action-row">
+            <button id="render-button" class="solid-button" type="button">立即整理</button>
+            <button id="copy-button" class="ghost-button" type="button">复制改写结果</button>
+            <button id="reset-button" class="ghost-button" type="button">清空</button>
+          </div>
+        </section>
+
+        <section class="panel panel-output">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">输出</p>
+              <h2>可读层预览</h2>
+            </div>
+            <div class="status-cluster">
+              <span class="status-pill" id="rewrite-state">等待输入</span>
+              <span class="status-pill" id="profile-state">语言未识别</span>
+            </div>
+          </div>
+
+          <div class="metrics-row">
+            <div class="metric-card">
+              <span class="metric-label">输入密度</span>
+              <strong id="raw-score">0</strong>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">新增结构块</span>
+              <strong id="sections-added">0</strong>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">新增字符</span>
+              <strong id="chars-added">0</strong>
+            </div>
+          </div>
+
+          <div id="preview-note" class="preview-note">
+            粘贴一段长输出后，这里会生成更适合阅读的结构层。
+          </div>
+
+          <div id="rendered-output" class="rendered-output is-empty"></div>
+
+          <details class="raw-markdown">
+            <summary>查看生成的 markdown</summary>
+            <pre id="raw-output"></pre>
+          </details>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
