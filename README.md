@@ -28,6 +28,29 @@ The demo runs entirely in the browser and reuses the same readability engine as
 the plugin. It exists as a low-friction trial path, but the main install CTA
 still stays on the ClawHub plugin page so traffic does not fragment.
 
+## Browser overlay companion
+
+For OpenClaw Web users who want the most direct interaction, this repo now also
+ships a browser-side companion:
+
+- extension folder:
+  `browser-companion/openclaw-tool-overlay`
+- local harness:
+  `browser-companion/openclaw-tool-overlay/fixture.html`
+
+What it does:
+
+- watches the real `Tool Output` sidebar in OpenClaw Web
+- mounts an overlay inside the actual sidebar panel
+- follows panel size changes and narrow-width states locally
+- keeps a local on/off switch and raw-output foldback
+
+What it is not:
+
+- not a ClawHub plugin listing
+- not a host-UI patch inside the public OpenClaw plugin API
+- not a remote service that uploads tool output somewhere else
+
 ## What it does
 
 - restructures long AI replies into a tool-output-style readability layer
@@ -49,6 +72,7 @@ Current plugin-API reality:
 - `skill` and `MCP` routes can change structure and wording.
 - a plugin can automatically add the readability layer
 - changing the host app's actual typography chrome still requires a UI patch
+- directly covering the web `Tool Output` sidebar requires a browser-side companion or a Control UI patch
 
 Web-first reality:
 
@@ -101,6 +125,12 @@ No local OpenClaw yet:
 
 - open `docs/demo/index.html` directly in a browser
 - or publish the `docs/` folder with GitHub Pages
+
+For OpenClaw Web users:
+
+- load the unpacked browser companion from
+  `browser-companion/openclaw-tool-overlay`
+- it targets the web `Tool Output` sidebar directly
 
 ## Commands
 
@@ -179,4 +209,10 @@ After editing the shared engine, sync the demo copy:
 
 ```bash
 npm run sync:demo-core
+```
+
+Sync the browser companion bundle:
+
+```bash
+npm run sync:browser-core
 ```

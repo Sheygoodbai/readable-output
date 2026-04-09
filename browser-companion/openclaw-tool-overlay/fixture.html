@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>看得清 Overlay Fixture</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%232962ff'/%3E%3Cpath d='M18 23h28M18 32h18M18 41h24' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./fixture.css" />
+    <link rel="stylesheet" href="./content.css" />
+  </head>
+  <body>
+    <main class="fixture-shell">
+      <section class="fixture-info">
+        <p class="fixture-eyebrow">Fixture</p>
+        <h1>OpenClaw Tool Output Overlay Harness</h1>
+        <p>
+          这个页面模拟官方 `Tool Output` sidebar 的主要 DOM 结构，方便我们在没有本地
+          OpenClaw 的情况下验证 companion overlay 的交互。
+        </p>
+        <div class="fixture-actions">
+          <button type="button" data-sample="zh">中文样例</button>
+          <button type="button" data-sample="en">English</button>
+          <button type="button" data-sample="json">JSON / 日志</button>
+          <button type="button" id="toggle-width">切换窄栏</button>
+        </div>
+      </section>
+
+      <section class="fixture-stage">
+        <div class="chat-split-container">
+          <div class="chat-main">
+            <div class="chat-main__placeholder">
+              <div class="chat-main__card">Main chat area placeholder</div>
+            </div>
+          </div>
+          <aside class="chat-sidebar" id="fixture-sidebar">
+            <div class="sidebar-panel">
+              <div class="sidebar-header">
+                <div class="sidebar-title">Tool Output</div>
+                <button class="btn" id="close-sidebar" title="Close sidebar">×</button>
+              </div>
+              <div class="sidebar-content">
+                <div class="sidebar-markdown" id="fixture-markdown"></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      localStorage.removeItem("readable-output:web-overlay");
+    </script>
+    <script src="./readable-engine.global.js"></script>
+    <script src="./content.js"></script>
+    <script src="./fixture.js"></script>
+  </body>
+</html>

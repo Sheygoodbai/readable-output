@@ -1,0 +1,199 @@
+:root {
+  color-scheme: light;
+  --panel: #12161d;
+  --panel-muted: #171d26;
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #ebf1f8;
+  --muted: #aab4c3;
+  --accent: #7bb0ff;
+  --secondary: rgba(255, 255, 255, 0.04);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family:
+    "SF Pro Display",
+    "SF Pro Text",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "PingFang SC",
+    sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255, 186, 111, 0.18), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(122, 173, 255, 0.18), transparent 30%),
+    linear-gradient(180deg, #f4efe7 0%, #eee6da 100%);
+  color: #18212c;
+}
+
+.fixture-shell {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+}
+
+.fixture-info,
+.fixture-stage {
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 22px 54px rgba(31, 46, 76, 0.16);
+  backdrop-filter: blur(14px);
+}
+
+.fixture-info {
+  padding: 28px;
+}
+
+.fixture-eyebrow {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  color: rgba(24, 33, 44, 0.58);
+  font-weight: 650;
+}
+
+.fixture-info h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.fixture-info p {
+  color: rgba(24, 33, 44, 0.72);
+  line-height: 1.75;
+}
+
+.fixture-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.fixture-actions button,
+.btn {
+  appearance: none;
+  border: 1px solid rgba(24, 33, 44, 0.08);
+  background: rgba(255, 255, 255, 0.74);
+  color: #18212c;
+  border-radius: 999px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.fixture-stage {
+  min-height: 760px;
+  padding: 18px;
+}
+
+.chat-split-container {
+  display: flex;
+  gap: 0;
+  min-height: 724px;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #0d1218;
+}
+
+.chat-main {
+  flex: 1;
+  min-width: 360px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+    #0f141c;
+  padding: 18px;
+}
+
+.chat-main__placeholder {
+  height: 100%;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+}
+
+.chat-main__card {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.chat-sidebar {
+  flex: 1;
+  min-width: 320px;
+  max-width: 46%;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-sidebar.is-narrow {
+  max-width: 34%;
+}
+
+.sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--panel);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  background: var(--panel-muted);
+}
+
+.sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+  color: var(--text);
+}
+
+.sidebar-markdown {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.sidebar-markdown p {
+  margin: 0 0 0.9em;
+}
+
+.sidebar-markdown pre {
+  margin: 0.9em 0;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 1080px) {
+  .fixture-shell {
+    grid-template-columns: 1fr;
+  }
+}

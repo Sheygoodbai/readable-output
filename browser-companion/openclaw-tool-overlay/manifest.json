@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "看得清 Overlay Companion",
+  "version": "0.1.0",
+  "description": "Covers the OpenClaw Web Tool Output sidebar with a readability-first overlay that summarizes long technical output before you scan the raw text.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.openclaw.ai/*",
+        "http://localhost/*",
+        "http://localhost:*/*",
+        "http://127.0.0.1/*",
+        "http://127.0.0.1:*/*"
+      ],
+      "js": [
+        "readable-engine.global.js",
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
