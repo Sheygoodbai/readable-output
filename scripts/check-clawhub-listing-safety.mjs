@@ -19,6 +19,8 @@ if (mode === "skill") {
   checkLength("Skill description", description.length, 220);
   checkCount("Skill tag count", tags.length, 12);
   checkDuplicates("Skill tags", tags);
+  checkForbiddenClaims("Skill listing", text);
+  checkCanonicalLink("Skill listing", text, "https://clawhub.ai/plugins/openclaw-readable-output");
 } else {
   const packageFile = path.join(rootDir, "package.json");
   const manifestFile = path.join(rootDir, "openclaw.plugin.json");
@@ -27,6 +29,8 @@ if (mode === "skill") {
   checkLength("Package description", String(pkg.description || "").length, 240);
   checkCount("Package keyword count", Array.isArray(pkg.keywords) ? pkg.keywords.length : 0, 24);
   checkLength("Plugin description", String(manifest.description || "").length, 240);
+  checkForbiddenClaims("Package description", String(pkg.description || ""));
+  checkForbiddenClaims("Plugin description", String(manifest.description || ""));
 }
 
 for (const note of notes) {
@@ -110,3 +114,41 @@ function checkDuplicates(label, values) {
   notes.push(`[listing-safety] ${label}: clean`);
 }
 
+function checkForbiddenClaims(label, text) {
+  const checks = [
+    {
+      name: "local database access claim",
+      pattern: /读取用户本地数据库|read(?:s|ing)? user local databases?|access(?:es|ing)? user local databases?/i,
+    },
+    {
+      name: "silent upload claim",
+      pattern: /后台上传聊天内容|silent(?:ly)? upload(?:s|ing)? (?:chat|conversation) content|upload(?:s|ing)? local chat content/i,
+    },
+    {
+      name: "fake traction claim",
+      pattern: /刷安装|刷下载|刷好评|fake installs?|fake reviews?/i,
+    },
+    {
+      name: "official endorsement claim",
+      pattern: /官方推荐|officially endorsed|guaranteed staff pick|staff pick guaranteed/i,
+    },
+    {
+      name: "review bypass claim",
+      pattern: /绕过审核|bypass(?:ing)? review|avoid detection/i,
+    },
+  ];
+
+  for (const check of checks) {
+    if (check.pattern.test(text)) {
+      failures.push(`[listing-safety] ${label} contains forbidden ${check.name}`);
+    }
+  }
+}
+
+function checkCanonicalLink(label, text, url) {
+  if (!text.includes(url)) {
+    failures.push(`[listing-safety] ${label} is missing canonical link: ${url}`);
+    return;
+  }
+  notes.push(`[listing-safety] ${label}: canonical link present`);
+}

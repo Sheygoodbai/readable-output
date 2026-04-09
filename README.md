@@ -17,6 +17,19 @@ Canonical pages:
 - Skill: `https://clawhub.ai/sheygoodbai/readable-output`
 - Plugin: `https://clawhub.ai/plugins/openclaw-readable-output`
 
+## Distribution model
+
+This repo uses one product line with different entry points instead of several
+separate brands:
+
+- ClawHub skill: discovery surface and low-friction manual use
+- ClawHub plugin: main install path for automatic local readability layering
+- Chrome extension: honest direct overlay route for OpenClaw Web users
+- Browser demo: proof path for users without local OpenClaw yet
+
+The point is to keep naming, screenshots, and traffic focused on the same
+canonical product rather than splitting users across several pages.
+
 ## Web-first demo
 
 If you do not have local OpenClaw, start with the browser demo shipped in this repo:
@@ -78,6 +91,12 @@ Current plugin-API reality:
 - a plugin can automatically add the readability layer
 - changing the host app's actual typography chrome still requires a UI patch
 - directly covering the web `Tool Output` sidebar requires a browser-side companion or a Control UI patch
+
+Marketplace reality:
+
+- the skill can serve as a discovery page on ClawHub
+- the plugin should remain the primary automatic-install CTA
+- web-overlay claims should stay attached to the Chrome extension path, not the plugin listing
 
 Web-first reality:
 
