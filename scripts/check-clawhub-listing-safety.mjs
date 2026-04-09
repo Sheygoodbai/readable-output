@@ -20,7 +20,7 @@ if (mode === "skill") {
   checkCount("Skill tag count", tags.length, 12);
   checkDuplicates("Skill tags", tags);
   checkForbiddenClaims("Skill listing", text);
-  checkCanonicalLink("Skill listing", text, "https://clawhub.ai/plugins/openclaw-readable-output");
+  checkCanonicalLink("Skill listing", text, "https://clawhub.ai/plugins/%40sheygoodbai%2Fopenclaw-readable-output");
 } else {
   const packageFile = path.join(rootDir, "package.json");
   const manifestFile = path.join(rootDir, "openclaw.plugin.json");

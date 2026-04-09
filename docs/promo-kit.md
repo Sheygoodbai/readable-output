@@ -2,7 +2,7 @@
 
 ## Canonical routing
 
-- Primary install page: `https://clawhub.ai/plugins/openclaw-readable-output`
+- Primary install page: `https://clawhub.ai/plugins/%40sheygoodbai%2Fopenclaw-readable-output`
 - Skill support page: `https://clawhub.ai/sheygoodbai/readable-output`
 - Web overlay route: Chrome extension in `browser-companion/openclaw-tool-overlay`
 - Public proof/demo: GitHub repo `docs/demo`
@@ -92,6 +92,75 @@ Why this instead of a generic summarizer:
 - It highlights risk and uncertainty instead of smoothing them away.
 - It is designed as a readability layer, not a style-heavy rewrite toy.
 
+## ClawHub listing pack
+
+Skill page title:
+
+`看得清 Readable Output`
+
+Skill page summary:
+
+`Turn dense AI replies into a clearer reading layer with overview, key points, warnings, next steps, and folded raw text.`
+
+Plugin page summary:
+
+`A local readability layer for long OpenClaw replies. Surface the conclusion, risk, and next action first, then keep the original wording folded underneath for verification.`
+
+One-line CTA:
+
+`先看懂，再决定信不信。`
+
+Two-line CTA:
+
+`很多 AI 输出的问题，不是没信息，而是把重点、风险和下一步埋进了一整屏字里。`
+`看得清先把可执行判断层抬到前面，再把原文保留下来。`
+
+## Screenshot plan
+
+Screenshot 1 title:
+
+`Long AI output, reduced to the parts that matter first`
+
+Screenshot 2 title:
+
+`Overview, key points, warnings, and next step in one scan`
+
+Screenshot 3 title:
+
+`Original wording stays folded underneath for verification`
+
+Screenshot 4 title:
+
+`Language-aware structure for Chinese, English, Japanese, Korean, Arabic, and Hebrew`
+
+Screenshot 5 title:
+
+`OpenClaw Web users can switch on a direct Tool Output overlay locally`
+
+## Social copy
+
+X / short post:
+
+`AI output often sounds more certain than it really is. 看得清 Readable Output adds a local reading layer that surfaces the conclusion, risk, and next step first, then keeps the raw wording folded underneath for verification.`
+
+Xiaohongshu / note opener:
+
+`很多 AI 回复并不是没用，而是故意写得很满。真正让人难受的是，你一眼看不出结论、风险和下一步。`
+
+Community post opener:
+
+`If you already use AI every day, you do not need more style. You need a faster way to see what is actually being claimed, what is uncertain, and what still needs proof.`
+
+## Review request template
+
+Short ask:
+
+`如果你愿意，欢迎留一句最真实的使用反馈：它有没有帮你更快看懂重点，或者更早发现风险。`
+
+Long ask:
+
+`如果这次确实帮你少读了很多废话，或者让你更快看到 AI 回答里的不确定性，欢迎留一个真实评价。最好写具体一点，比如“它帮我先看到风险”和“原文折叠保留让我更敢用”。`
+
 ## Search phrases worth repeating naturally
 
 - readable AI output
@@ -102,6 +171,10 @@ Why this instead of a generic summarizer:
 - 中文 AI 输出可读性
 - AI 术语改写
 - 多语言 AI 排版
+- OpenClaw readability plugin
+- OpenClaw tool output overlay
+- AI jargon clearer rewrite
+- local-first AI output plugin
 
 ## Review-friendly trust copy
 
@@ -136,3 +209,10 @@ Why this instead of a generic summarizer:
 - Route serious install intent to one canonical ClawHub plugin page.
 - Ask real users for concrete before/after feedback in their own language.
 - Keep GitHub, ClawHub, and screenshots synchronized so the same claims appear everywhere.
+
+## Staff-pick friendly discipline
+
+- Keep screenshots product-real, not concept art.
+- Keep the first paragraph concrete and easy to verify.
+- Show the trust boundary early: local-first, original text preserved, no hidden upload claim.
+- Make the plugin page the single install destination linked from skill, GitHub, demo, and posts.

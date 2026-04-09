@@ -1,6 +1,6 @@
 ---
 name: readable-output
-version: 0.1.0
+version: 0.1.2
 description: "Official 看得清 Readable Output skill. Turns dense AI replies into a clearer reading layer with overview, key points, warnings, next steps, and folded raw text."
 license: MIT-0
 tags: [readable-output, clawhub, openclaw, readability, ai-output, output-layout, multilingual-layout, local-first, "可读性", "排版", "多语言", "术语"]
@@ -85,5 +85,5 @@ companion provide the more automatic experience.
 ## Canonical links
 
 - ClawHub skill page: `https://clawhub.ai/sheygoodbai/readable-output`
-- ClawHub plugin page: `https://clawhub.ai/plugins/openclaw-readable-output`
+- ClawHub plugin page: `https://clawhub.ai/plugins/%40sheygoodbai%2Fopenclaw-readable-output`
 - GitHub repository: `https://github.com/Sheygoodbai/readable-output`

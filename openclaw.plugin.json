@@ -1,7 +1,7 @@
 {
   "id": "readable-output",
   "name": "看得清 Readable Output",
-  "description": "Adds a readability-first layer to long OpenClaw replies. It inserts an overview, grouped key points, warning callouts, next-step cues, a closing reminder, and a collapsed original-output block with language-aware labels.",
+  "description": "Adds a local readability layer to long OpenClaw replies with overview, key points, warnings, next steps, a closing reminder, and folded original text for quick verification.",
   "skills": [
     "./skills"
   ],

@@ -15,7 +15,7 @@ It adds a local readability layer before the answer reaches the user:
 Canonical pages:
 
 - Skill: `https://clawhub.ai/sheygoodbai/readable-output`
-- Plugin: `https://clawhub.ai/plugins/openclaw-readable-output`
+- Plugin: `https://clawhub.ai/plugins/%40sheygoodbai%2Fopenclaw-readable-output`
 
 ## Distribution model
 

@@ -20,7 +20,7 @@ companion only when automatic behavior is useful.
 ## Canonical routes
 
 - ClawHub skill page: `https://clawhub.ai/sheygoodbai/readable-output`
-- ClawHub plugin page: `https://clawhub.ai/plugins/openclaw-readable-output`
+- ClawHub plugin page: `https://clawhub.ai/plugins/%40sheygoodbai%2Fopenclaw-readable-output`
 - GitHub repository: `https://github.com/Sheygoodbai/readable-output`
 - Plugin install: `openclaw plugins install clawhub:@sheygoodbai/openclaw-readable-output`
 - Enable plugin: `openclaw plugins enable readable-output`
