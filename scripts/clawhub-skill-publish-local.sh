@@ -35,18 +35,15 @@ console.log(match[1]);
 NODE
 )"
 
+remote_json="$(clawhub inspect "$SLUG" --json 2>/dev/null || true)"
 remote_version="$(
-  clawhub inspect "$SLUG" --json 2>/dev/null | node - <<'NODE' || true
-let input = "";
-process.stdin.setEncoding("utf8");
-process.stdin.on("data", (chunk) => { input += chunk; });
-process.stdin.on("end", () => {
-  try {
-    const parsed = JSON.parse(input);
-    const version = parsed?.latestVersion?.version || "";
-    if (version) process.stdout.write(version);
-  } catch {}
-});
+  node - <<'NODE' "$remote_json"
+const input = process.argv[2] || "";
+try {
+  const parsed = JSON.parse(input);
+  const version = parsed?.latestVersion?.version || "";
+  if (version) process.stdout.write(version);
+} catch {}
 NODE
 )"
 
@@ -95,4 +92,3 @@ fi
 
 echo "[readable-output-skill] publishing $SLUG from $SKILL_DIR as $version"
 exec clawhub "${publish_args[@]}"
-
