@@ -1,6 +1,9 @@
 .git
 .github
+browser-companion
+clawhub
+dist
 docs
 node_modules
 scripts
-
+tests
