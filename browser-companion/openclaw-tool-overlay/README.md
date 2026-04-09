@@ -1,28 +1,53 @@
-# 看得清 Overlay Companion
+# 看得清 Chrome Extension
 
-This is a browser-side companion for OpenClaw Web, not a ClawHub plugin.
+This is the browser-side Chrome extension for OpenClaw Web, not a ClawHub plugin.
 
-What it does:
+## What ships
+
+- `content.js`: mounts the Tool Output overlay inside the real sidebar
+- `popup.html`: quick controls for enabled/mode/density/current-tab status
+- `options.html`: full settings page and privacy/runtime notes
+- `background.js`: badge state + keyboard shortcut support
+- `icons/`: packaged Chrome extension icons
+
+## What it does
 
 - watches the `Tool Output` sidebar in OpenClaw Web
-- covers the sidebar with a readability-first layer
+- covers that sidebar with a readability-first layer
 - keeps the raw output folded underneath when enabled
-- adapts automatically to the sidebar size because the overlay is mounted inside the real panel
+- follows panel width changes because the overlay is mounted inside the actual panel
+- syncs settings across popup, options, and content script through local extension storage
 
-Why it exists:
+## Why it exists
 
 - the public OpenClaw plugin API can rewrite content
-- the public web UI does not currently expose a plugin-side UI injection point for the Tool Output sidebar
-- a browser companion is the closest honest path to the direct overlay interaction
+- the public web UI does not expose a direct plugin-side UI injection point for the Tool Output sidebar
+- a Chrome extension is the closest honest path to the direct overlay interaction
 
 ## Load unpacked
 
-1. Open your Chromium browser extension page.
-2. Turn on developer mode.
-3. Load this folder as an unpacked extension:
+1. Open `chrome://extensions/`
+2. Turn on developer mode
+3. Choose `Load unpacked`
+4. Select:
 
 ```text
 browser-companion/openclaw-tool-overlay
+```
+
+## Package zip
+
+From the repo root:
+
+```bash
+npm run generate:browser-icons
+npm run package:browser-extension
+```
+
+The packaged zip will be created in:
+
+```text
+dist/openclaw-tool-overlay-0.1.0.zip
 ```
 
 ## Current scope

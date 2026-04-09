@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>看得清 Overlay Settings</title>
+    <link rel="stylesheet" href="./ui.css" />
+    <link rel="stylesheet" href="./options.css" />
+  </head>
+  <body class="extension-options">
+    <div class="options-shell">
+      <header class="app-hero app-hero--wide">
+        <div class="app-hero__mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="app-hero__copy">
+          <p class="app-eyebrow">Chrome Extension</p>
+          <h1>看得清 Readable Output for OpenClaw Web</h1>
+          <p class="app-lede">
+            This extension covers OpenClaw Web Tool Output with a readability-first layer, while
+            keeping the raw text available underneath for verification.
+          </p>
+        </div>
+      </header>
+
+      <main class="options-grid">
+        <section class="app-section">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Behavior</p>
+              <h2>Overlay settings</h2>
+            </div>
+            <label class="switch">
+              <input id="enabled" type="checkbox" />
+              <span class="switch-track"></span>
+            </label>
+          </div>
+
+          <div class="control-stack">
+            <label class="control-row">
+              <span>Language profile</span>
+              <select id="languageProfile"></select>
+            </label>
+
+            <div class="control-group">
+              <span>Rewrite mode</span>
+              <div class="segmented" id="mode-group"></div>
+            </div>
+
+            <div class="control-group">
+              <span>Density</span>
+              <div class="segmented" id="density-group"></div>
+            </div>
+
+            <label class="checkbox-row">
+              <input id="collapseOriginal" type="checkbox" />
+              <span>Keep raw output folded underneath</span>
+            </label>
+
+            <label class="checkbox-row">
+              <input id="closingCue" type="checkbox" />
+              <span>Show the final caution reminder</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="app-section">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">How it works</p>
+              <h2>Runtime model</h2>
+            </div>
+          </div>
+
+          <div class="info-list">
+            <div class="info-item">
+              <strong>Local-only overlay</strong>
+              <p>
+                The extension runs in the browser and rewrites the visible Tool Output panel
+                locally. It does not read local databases or upload chat content elsewhere.
+              </p>
+            </div>
+            <div class="info-item">
+              <strong>Real panel coverage</strong>
+              <p>
+                The overlay mounts inside the actual OpenClaw sidebar, so it follows width changes
+                and panel open/close cycles instead of guessing a floating position.
+              </p>
+            </div>
+            <div class="info-item">
+              <strong>Verification preserved</strong>
+              <p>
+                The raw output stays available underneath so users can expand it before acting on a
+                summary.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="app-section">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Scope</p>
+              <h2>Where it runs</h2>
+            </div>
+          </div>
+
+          <div class="badge-list">
+            <span class="info-badge">https://*.openclaw.ai/*</span>
+            <span class="info-badge">http://localhost:*</span>
+            <span class="info-badge">http://127.0.0.1:*</span>
+          </div>
+
+          <div class="command-box">
+            <span class="command-box__label">Keyboard toggle</span>
+            <strong>Command/Ctrl + Shift + Y</strong>
+          </div>
+        </section>
+
+        <section class="app-section">
+          <div class="section-header">
+            <div>
+              <p class="section-kicker">Privacy</p>
+              <h2>Clean listing posture</h2>
+            </div>
+          </div>
+
+          <ul class="plain-list">
+            <li>Uses `storage` only for your local extension settings.</li>
+            <li>Does not read a local database outside the web page it is already rendering.</li>
+            <li>Does not need a remote backend to summarize Tool Output.</li>
+            <li>Can be audited directly from the unpacked extension source.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="./readable-engine.global.js"></script>
+    <script src="./extension-state.js"></script>
+    <script src="./options.js"></script>
+  </body>
+</html>

@@ -37,6 +37,10 @@ ships a browser-side companion:
   `browser-companion/openclaw-tool-overlay`
 - local harness:
   `browser-companion/openclaw-tool-overlay/fixture.html`
+- Chrome popup:
+  `browser-companion/openclaw-tool-overlay/popup.html`
+- Chrome options page:
+  `browser-companion/openclaw-tool-overlay/options.html`
 
 What it does:
 
@@ -44,6 +48,7 @@ What it does:
 - mounts an overlay inside the actual sidebar panel
 - follows panel size changes and narrow-width states locally
 - keeps a local on/off switch and raw-output foldback
+- ships a real Chrome extension shell with popup, options page, badge, and shortcut
 
 What it is not:
 
@@ -215,4 +220,11 @@ Sync the browser companion bundle:
 
 ```bash
 npm run sync:browser-core
+```
+
+Generate icons and package the Chrome extension:
+
+```bash
+npm run generate:browser-icons
+npm run package:browser-extension
 ```

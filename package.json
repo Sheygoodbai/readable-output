@@ -6,9 +6,11 @@
   "type": "module",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "check": "node --check src/index.js && node --check docs/demo/app.js && node --check browser-companion/openclaw-tool-overlay/content.js && node scripts/sync-demo-core.mjs --check && node scripts/sync-browser-engine.mjs --check && node --test tests/*.test.js",
+    "check": "node --check src/index.js && node --check docs/demo/app.js && node --check browser-companion/openclaw-tool-overlay/extension-state.js && node --check browser-companion/openclaw-tool-overlay/content.js && node --check browser-companion/openclaw-tool-overlay/background.js && node --check browser-companion/openclaw-tool-overlay/popup.js && node --check browser-companion/openclaw-tool-overlay/options.js && node scripts/sync-demo-core.mjs --check && node scripts/sync-browser-engine.mjs --check && node --test tests/*.test.js",
     "sync:demo-core": "node scripts/sync-demo-core.mjs",
     "sync:browser-core": "node scripts/sync-browser-engine.mjs",
+    "generate:browser-icons": "python3 scripts/generate-browser-extension-icons.py",
+    "package:browser-extension": "bash scripts/package-browser-extension.sh",
     "publish:skill": "bash scripts/clawhub-skill-publish-local.sh",
     "publish:plugin": "bash scripts/clawhub-package-publish-local.sh"
   },

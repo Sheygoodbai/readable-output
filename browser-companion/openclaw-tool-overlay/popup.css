@@ -1,0 +1,14 @@
+html,
+body {
+  width: 392px;
+  min-height: 620px;
+}
+
+.extension-popup .extension-app {
+  min-height: 100vh;
+  padding: 18px 18px 16px;
+}
+
+.app-footer {
+  margin-top: 16px;
+}

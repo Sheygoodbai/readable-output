@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>看得清 Overlay</title>
+    <link rel="stylesheet" href="./ui.css" />
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body class="extension-popup">
+    <div class="extension-app">
+      <header class="app-hero">
+        <div class="app-hero__mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="app-hero__copy">
+          <p class="app-eyebrow">Readable Overlay</p>
+          <h1>看得清 for OpenClaw Web</h1>
+          <p class="app-lede">
+            Cover Tool Output with a cleaner reading layer before you scan the raw text.
+          </p>
+        </div>
+      </header>
+
+      <section class="app-status">
+        <div class="status-pill" id="page-status-pill">Checking page…</div>
+        <p class="status-copy" id="page-status-copy">Looking at the current tab.</p>
+      </section>
+
+      <section class="app-section">
+        <div class="section-header">
+          <div>
+            <p class="section-kicker">Master switch</p>
+            <h2>Overlay behavior</h2>
+          </div>
+          <label class="switch">
+            <input id="enabled" type="checkbox" />
+            <span class="switch-track"></span>
+          </label>
+        </div>
+
+        <div class="control-stack">
+          <label class="control-row">
+            <span>Language profile</span>
+            <select id="languageProfile"></select>
+          </label>
+
+          <div class="control-group">
+            <span>Rewrite mode</span>
+            <div class="segmented" id="mode-group"></div>
+          </div>
+
+          <div class="control-group">
+            <span>Density</span>
+            <div class="segmented" id="density-group"></div>
+          </div>
+
+          <label class="checkbox-row">
+            <input id="collapseOriginal" type="checkbox" />
+            <span>Keep raw output folded underneath</span>
+          </label>
+
+          <label class="checkbox-row">
+            <input id="closingCue" type="checkbox" />
+            <span>Show the final caution reminder</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="app-section app-section--compact">
+        <div class="section-header">
+          <div>
+            <p class="section-kicker">Current tab</p>
+            <h2>Live status</h2>
+          </div>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-card">
+            <span class="metric-label">Sidebar</span>
+            <strong id="metric-sidebar">Unknown</strong>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Overlay</span>
+            <strong id="metric-overlay">Unknown</strong>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Profile</span>
+            <strong id="metric-profile">Auto</strong>
+          </div>
+        </div>
+      </section>
+
+      <footer class="app-footer">
+        <button class="secondary-button" id="open-options" type="button">Open full settings</button>
+        <button class="primary-button" id="refresh-status" type="button">Refresh tab status</button>
+      </footer>
+    </div>
+
+    <script src="./readable-engine.global.js"></script>
+    <script src="./extension-state.js"></script>
+    <script src="./popup.js"></script>
+  </body>
+</html>

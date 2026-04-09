@@ -1,16 +1,25 @@
 (function () {
-  if (!globalThis.ReadableEngine) {
+  if (!globalThis.ReadableEngine || !globalThis.ReadableOverlayExtension) {
     return;
   }
 
   const {
-    normalizeSettings,
     readabilityScore,
     resolveLanguageProfile,
     rewriteOutgoingContent,
   } = globalThis.ReadableEngine;
+  const {
+    DEFAULT_SETTINGS,
+    DENSITY_OPTIONS,
+    MODE_OPTIONS,
+    cloneSettings,
+    loadSettings,
+    matchesSupportedUrl,
+    nextValue,
+    saveSettings,
+    subscribeToSettings,
+  } = globalThis.ReadableOverlayExtension;
 
-  const STORAGE_KEY = "readable-output:web-overlay";
   const OVERLAY_ROOT_CLASS = "readable-tool-overlay";
   const LANGUAGE_LABELS = Object.freeze({
     auto: "Auto",
@@ -21,73 +30,19 @@
     ar: "AR",
     he: "HE",
   });
-  const DENSITY_CYCLE = Object.freeze(["compact", "balanced", "spacious"]);
-  const MODE_CYCLE = Object.freeze(["adaptive", "always"]);
 
   const state = {
-    settings: normalizeSettings({
-      enabled: true,
-      mode: "adaptive",
-      density: "balanced",
-      languageProfile: "auto",
-      collapseOriginal: true,
-      closingCue: true,
-      trackStats: false,
-    }),
+    settings: cloneSettings(DEFAULT_SETTINGS),
     panelObserver: null,
     resizeObserver: null,
     pageObserver: null,
+    settingsUnsubscribe: null,
     activePanel: null,
     currentSourceText: "",
+    lastProfile: "auto",
+    lastRewriteChanged: false,
     rafId: 0,
   };
-
-  function storageAvailable() {
-    return typeof chrome !== "undefined" && chrome.storage && chrome.storage.local;
-  }
-
-  async function loadSettings() {
-    if (storageAvailable()) {
-      try {
-        const result = await chrome.storage.local.get([STORAGE_KEY]);
-        return normalizeSettings({ ...state.settings, ...(result[STORAGE_KEY] || {}) });
-      } catch {
-        return state.settings;
-      }
-    }
-    try {
-      return normalizeSettings({
-        ...state.settings,
-        ...JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"),
-      });
-    } catch {
-      return state.settings;
-    }
-  }
-
-  async function saveSettings() {
-    const serializable = {
-      enabled: state.settings.enabled,
-      mode: state.settings.mode,
-      density: state.settings.density,
-      languageProfile: state.settings.languageProfile,
-      collapseOriginal: state.settings.collapseOriginal,
-      closingCue: state.settings.closingCue,
-    };
-    if (storageAvailable()) {
-      try {
-        await chrome.storage.local.set({ [STORAGE_KEY]: serializable });
-      } catch {
-        // Ignore storage errors on unsupported pages.
-      }
-      return;
-    }
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
-    } catch {
-      // Ignore quota/private mode errors.
-    }
-  }
 
   function isVisible(element) {
     if (!(element instanceof HTMLElement) || !element.isConnected) {
@@ -99,10 +54,12 @@
 
   function findActiveSidebarPanel() {
     const panels = Array.from(document.querySelectorAll(".sidebar-panel"));
-    return panels.find((panel) => {
-      const title = panel.querySelector(".sidebar-title");
-      return isVisible(panel) && title && /tool output/i.test(title.textContent || "");
-    }) || null;
+    return (
+      panels.find((panel) => {
+        const title = panel.querySelector(".sidebar-title");
+        return isVisible(panel) && title && /tool output/i.test(title.textContent || "");
+      }) || null
+    );
   }
 
   function getSourceNode(panel) {
@@ -251,24 +208,23 @@
           ].join("")
         : "";
 
-    return {
-      changed: result.changed,
-      profile,
-      html: [
-        `<div class="readable-tool-overlay__hint">${escapeHtml(hint)}</div>`,
-        `<div class="readable-tool-overlay__metric-row">`,
-        `<div class="readable-tool-overlay__metric"><span class="readable-tool-overlay__metric-label">Input density</span><strong>${rawScore}</strong></div>`,
-        `<div class="readable-tool-overlay__metric"><span class="readable-tool-overlay__metric-label">Sections added</span><strong>${result.sectionsAdded || 0}</strong></div>`,
-        `<div class="readable-tool-overlay__metric"><span class="readable-tool-overlay__metric-label">Chars added</span><strong>+${result.charsAdded || 0}</strong></div>`,
-        `</div>`,
-        sectionsHtml,
-        detailsHtml,
-        `<div class="readable-tool-overlay__badge-row">`,
-        `<span class="readable-tool-overlay__badge">Profile ${escapeHtml(LANGUAGE_LABELS[profile] || profile)}</span>`,
-        `<span class="readable-tool-overlay__badge">${result.changed ? "Rewritten" : "Already readable"}</span>`,
-        `</div>`,
-      ].join(""),
-    };
+    state.lastProfile = profile;
+    state.lastRewriteChanged = Boolean(result.changed);
+
+    return [
+      `<div class="readable-tool-overlay__hint">${escapeHtml(hint)}</div>`,
+      `<div class="readable-tool-overlay__metric-row">`,
+      `<div class="readable-tool-overlay__metric"><span class="readable-tool-overlay__metric-label">Input density</span><strong>${rawScore}</strong></div>`,
+      `<div class="readable-tool-overlay__metric"><span class="readable-tool-overlay__metric-label">Sections added</span><strong>${result.sectionsAdded || 0}</strong></div>`,
+      `<div class="readable-tool-overlay__metric"><span class="readable-tool-overlay__metric-label">Chars added</span><strong>+${result.charsAdded || 0}</strong></div>`,
+      `</div>`,
+      sectionsHtml,
+      detailsHtml,
+      `<div class="readable-tool-overlay__badge-row">`,
+      `<span class="readable-tool-overlay__badge">Profile ${escapeHtml(LANGUAGE_LABELS[profile] || profile)}</span>`,
+      `<span class="readable-tool-overlay__badge">${result.changed ? "Rewritten" : "Already readable"}</span>`,
+      `</div>`,
+    ].join("");
   }
 
   function renderPassiveShell(root) {
@@ -291,7 +247,6 @@
   function renderActiveShell(root, panel, sourceText) {
     root.classList.remove("readable-tool-overlay--passive");
     setCompactClass(root, panel);
-    const rendered = renderOverlayContent(sourceText);
     root.innerHTML = [
       `<div class="readable-tool-overlay__surface">`,
       `<div class="readable-tool-overlay__header">`,
@@ -307,7 +262,7 @@
       `<button class="readable-tool-overlay__chip readable-tool-overlay__chip--close" data-action="close-sidebar" aria-label="Close">×</button>`,
       `</div>`,
       `</div>`,
-      `<div class="readable-tool-overlay__body">${rendered.html}</div>`,
+      `<div class="readable-tool-overlay__body">${renderOverlayContent(sourceText)}</div>`,
       `</div>`,
     ].join("");
   }
@@ -325,6 +280,12 @@
       return;
     }
     renderActiveShell(root, panel, sourceText);
+  }
+
+  function detachOverlay() {
+    disconnectPanelObserver();
+    state.activePanel = null;
+    document.querySelectorAll(`.${OVERLAY_ROOT_CLASS}`).forEach((node) => node.remove());
   }
 
   function scheduleRender() {
@@ -385,45 +346,41 @@
     renderPanel(panel);
   }
 
-  function cycleValue(currentValue, values) {
-    const currentIndex = values.indexOf(currentValue);
-    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % values.length;
-    return values[nextIndex];
+  async function applySettingsUpdate(partial) {
+    state.settings = await saveSettings(partial);
+    scheduleRender();
+    return state.settings;
   }
 
   async function handleAction(action) {
     if (action === "toggle-enabled") {
-      state.settings = normalizeSettings({
-        ...state.settings,
-        enabled: !state.settings.enabled,
+      await applySettingsUpdate({ enabled: !state.settings.enabled });
+      return;
+    }
+    if (action === "cycle-density") {
+      await applySettingsUpdate({
+        density: nextValue(state.settings.density, DENSITY_OPTIONS),
       });
-    } else if (action === "cycle-density") {
-      state.settings = normalizeSettings({
-        ...state.settings,
-        density: cycleValue(state.settings.density, DENSITY_CYCLE),
+      return;
+    }
+    if (action === "cycle-mode") {
+      await applySettingsUpdate({
+        mode: nextValue(state.settings.mode, MODE_OPTIONS),
       });
-    } else if (action === "cycle-mode") {
-      state.settings = normalizeSettings({
-        ...state.settings,
-        mode: cycleValue(state.settings.mode, MODE_CYCLE),
-      });
-    } else if (action === "toggle-original") {
-      state.settings = normalizeSettings({
-        ...state.settings,
+      return;
+    }
+    if (action === "toggle-original") {
+      await applySettingsUpdate({
         collapseOriginal: !state.settings.collapseOriginal,
       });
-    } else if (action === "close-sidebar") {
+      return;
+    }
+    if (action === "close-sidebar") {
       const button = state.activePanel?.querySelector(".sidebar-header .btn");
       if (button instanceof HTMLElement) {
         button.click();
       }
-      return;
-    } else {
-      return;
     }
-
-    await saveSettings();
-    scheduleRender();
   }
 
   function handleOverlayClick(event) {
@@ -438,7 +395,27 @@
     void handleAction(actionTarget.dataset.action || "");
   }
 
+  function buildPageStatus() {
+    return {
+      supportedPage: matchesSupportedUrl(location.href),
+      toolSidebarDetected: Boolean(findActiveSidebarPanel()),
+      overlayMounted: Boolean(document.querySelector(`.${OVERLAY_ROOT_CLASS}`)),
+      enabled: state.settings.enabled,
+      mode: state.settings.mode,
+      density: state.settings.density,
+      collapseOriginal: state.settings.collapseOriginal,
+      closingCue: state.settings.closingCue,
+      currentSourceLength: state.currentSourceText.length,
+      currentProfile: state.lastProfile,
+      rewritten: state.lastRewriteChanged,
+      url: location.href,
+    };
+  }
+
   function startObservers() {
+    if (typeof chrome !== "undefined" && chrome.runtime?.id) {
+      document.documentElement.dataset.readableOverlayExtensionId = chrome.runtime.id;
+    }
     state.pageObserver = new MutationObserver(() => {
       scheduleRender();
     });
@@ -448,11 +425,50 @@
       attributes: true,
     });
     window.addEventListener("resize", scheduleRender, { passive: true });
+    state.settingsUnsubscribe = subscribeToSettings((nextSettings) => {
+      state.settings = nextSettings;
+      scheduleRender();
+    });
+
+    if (
+      typeof chrome !== "undefined" &&
+      chrome.runtime &&
+      chrome.runtime.onMessage &&
+      typeof chrome.runtime.onMessage.addListener === "function"
+    ) {
+      chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+        if (message?.type === "readable-overlay:get-status") {
+          sendResponse(buildPageStatus());
+          return false;
+        }
+        if (message?.type === "readable-overlay:apply-settings") {
+          void applySettingsUpdate(message.payload || {}).then((nextSettings) => {
+            sendResponse({ ok: true, settings: nextSettings });
+          });
+          return true;
+        }
+        return false;
+      });
+    }
+
     scheduleRender();
   }
 
   loadSettings().then((loaded) => {
     state.settings = loaded;
     startObservers();
+  });
+
+  window.addEventListener("pagehide", () => {
+    delete document.documentElement.dataset.readableOverlayExtensionId;
+    if (state.settingsUnsubscribe) {
+      state.settingsUnsubscribe();
+      state.settingsUnsubscribe = null;
+    }
+    if (state.pageObserver) {
+      state.pageObserver.disconnect();
+      state.pageObserver = null;
+    }
+    detachOverlay();
   });
 })();
